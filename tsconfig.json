@@ -1,0 +1,12 @@
+{
+	// "files": ["src/scripts/mocks/empty.ts"],
+	"include": ["src/scripts/*.ts", "src/typings/*.d.ts"],
+	"exclude": ["node_modules", "**/*.spec.ts"],
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"noImplicitAny": false,
+		"noImplicitAny": true,
+		"target": "es2015",
+		"allowJs": true
+	}
+}
