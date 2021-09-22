@@ -4,20 +4,24 @@ export interface ESwiperConfigs {
 	arrows?: boolean
 	scrollbar?: boolean
 	pagination?: boolean
-	dynamicBullets?: boolean
 	paginationType?: 'bullets' | 'fraction' | 'progressbar' | 'custom' | undefined
+	dynamicBullets?: boolean
 	clickable?: boolean
-	slidesPerView?: number | 'auto' | undefined
+	slidesPerView?: number | 'auto'
 	rows?: number
 	mousewheel?: boolean
 	autoplay?: boolean | AutoPlayProps
 	lazy?: boolean
   spaceBetween?: number
   thumbs?: boolean
-  thumbsContainer?: string
+  thumbsConfigs?: ThumbsConfigs
 }
 
 interface AutoPlayProps {
 	delay: number
 	disableOnInteraction?: boolean
+}
+
+interface ThumbsConfigs extends Partial<ESwiperConfigs> {
+	thumbsContainer: string
 }

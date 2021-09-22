@@ -1,31 +1,15 @@
-// import Swiper from '../../vendors/swiper-bundle2.min.js'
 import { ESwiperConfigs } from './types'
 declare const Swiper: any
-
-// new Swiper('teste', {
-
-// })
-
 interface ESwiperProps {
 	swiperContainer?: string
 	_swiperContainer?: any
 	configs: ESwiperConfigs
 }
 
-// interface ESwiperGenerateProps {
-// 	_swiperContainer: HTMLElement
-// 	configs: ESwiperConfigs
-// }
-
 interface ElementProps {
 	type: string
 	classList: string[]
 }
-
-/**
- * Teste
- * @param objeto swiper
- */
 
 export const eSwiper = ({ swiperContainer, configs }: ESwiperProps) => {
 	const _swiperContainer = swiperStructure(swiperContainer, configs)
@@ -46,13 +30,13 @@ export const swiperStructure = (
 
 	const _wrapperSwiper = Element({ type: 'div', classList: ['swiper-wrapper'] })
 
-	const _banners = [..._swiperContainer.children]
-	_banners.forEach((_banner) => {
-		_banner.classList.add('swiper-slide')
-		_wrapperSwiper.appendChild(_banner)
+	const _slides = [..._swiperContainer.children]
+	_slides.forEach((_slide) => {
+		_slide.classList.add('swiper-slide')
+		_wrapperSwiper.appendChild(_slide)
 
 		if (lazy) {
-			const _image = _banner.querySelector('img')
+			const _image = _slide.querySelector('img')
 			_image.classList.add('swiper-lazy')
 			_image.setAttribute('data-src', _image.src)
 			_image.removeAttribute('src')
@@ -60,19 +44,6 @@ export const swiperStructure = (
 	})
 
 	_swiperContainer.appendChild(_wrapperSwiper)
-
-	// const _shelfImages = _swiperContainer.querySelectorAll('.shelf > ul > li')
-	// _shelfImages.forEach((_shelfImage) => {
-	// 	_shelfImage.classList.add('swiper-slide')
-	// 	_wrapperSwiper.appendChild(_shelfImage)
-
-	// 	if (lazy) {
-	// 		const _image = _shelfImage.querySelector('img')
-	// 		_image.classList.add('swiper-lazy')
-	// 		_image.setAttribute('data-src', _image.src)
-	// 		_image.removeAttribute('src')
-	// 	}
-	// })
 
 	if (scrollbar) {
 		const _scrollbar = Element({ type: 'div', classList: ['swiper-scrollbar'] })
@@ -159,60 +130,54 @@ export const eSwiperGenerate = ({
 }
 
 export const thumbsGenerate = (swiper: any, configs: ESwiperConfigs) => {
-	const { lazy } = configs
+	const { thumbsConfigs, lazy } = configs
+	const { slidesPerView, spaceBetween = 2 } = thumbsConfigs
+
 	const _thumbsContainer = thumbsStructure(configs)
 
 	new Swiper(_thumbsContainer, {
 		loop: true,
-		spaceBetween: 10,
+		spaceBetween,
 		lazy,
-		slidesPerView: 2,
+		slidesPerView,
 		navigation: {
 			nextEl: '.swiper-button-next',
 			prevEl: '.swiper-button-prev'
 		},
+
 		thumbs: {
-			swiper: swiper
+			swiper
 		}
 	})
 }
 
 export const thumbsStructure = (configs: ESwiperConfigs) => {
-	const { thumbsContainer, lazy } = configs
+	const { thumbsConfigs, lazy } = configs
+	const { thumbsContainer } = thumbsConfigs
 
 	const _thumbsContainer = document.querySelector(`.${thumbsContainer}`)
 	_thumbsContainer.classList.add('swiper')
 	_thumbsContainer.setAttribute('thumbsSlider', '')
-	const _wrapperSwiper = Element({ type: 'div', classList: ['swiper-wrapper'] })
-	_thumbsContainer.appendChild(_wrapperSwiper)
 
-	const _banners = _thumbsContainer.querySelectorAll('.box-banner')
-	_banners.forEach((_banner) => {
-		_banner.classList.add('swiper-slide')
-		_wrapperSwiper.appendChild(_banner)
+	const _wrapperSwiper = Element({ type: 'div', classList: ['swiper-wrapper'] })
+
+	const _slides = [..._thumbsContainer.children]
+	_slides.forEach((_slide) => {
+		_slide.classList.add('swiper-slide')
+		_wrapperSwiper.appendChild(_slide)
 
 		if (lazy) {
-			const _image = _banner.querySelector('img')
+			const _image = _slide.querySelector('img')
 			_image.classList.add('swiper-lazy')
 			_image.setAttribute('data-src', _image.src)
 			_image.removeAttribute('src')
 		}
 	})
 
-	const _shelfImages = _thumbsContainer.querySelectorAll('.shelf > ul > li')
-	_shelfImages.forEach((_shelfImage) => {
-		_shelfImage.classList.add('swiper-slide')
-		_wrapperSwiper.appendChild(_shelfImage)
-	})
+	_thumbsContainer.appendChild(_wrapperSwiper)
 
 	return _thumbsContainer
 }
-
-/**
- * Criação de elemento HTML
- * @param options
- * @returns Elemento HTML
- */
 
 export const Element = ({ type, classList }: ElementProps) => {
 	const _element = document.createElement(type)
