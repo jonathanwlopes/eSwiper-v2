@@ -11,7 +11,8 @@ interface ElementProps {
 	classList: string[]
 }
 
-export const eSwiper = ({ swiperContainer, configs }: ESwiperProps) => {
+export const eSwiper = ({ configs }: ESwiperProps) => {
+	const { swiperContainer } = configs
 	const _swiperContainer = swiperStructure(swiperContainer, configs)
 	eSwiperGenerate({
 		_swiperContainer,
@@ -36,6 +37,11 @@ export const swiperStructure = (
 		_wrapperSwiper.appendChild(_slide)
 
 		if (lazy) {
+			const _preLoader = Element({
+				type: 'div',
+				classList: ['swiper-lazy-preloader']
+			})
+			_slide.appendChild(_preLoader)
 			const _image = _slide.querySelector('img')
 			_image.classList.add('swiper-lazy')
 			_image.setAttribute('data-src', _image.src)
@@ -93,11 +99,13 @@ export const eSwiperGenerate = ({
 		autoplay,
 		scrollbar,
 		lazy,
-		thumbs
+		thumbsConfigs
 	} = configs
 
+	const { isActive } = thumbsConfigs
+
 	let swiper = new Swiper(_swiperContainer, {
-		direction: direction,
+		direction,
 		loop: loop,
 		slidesPerView,
 		spaceBetween,
@@ -126,17 +134,25 @@ export const eSwiperGenerate = ({
 		}
 	})
 
-	if (thumbs) thumbsGenerate(swiper, configs)
+	if (isActive) thumbsGenerate(swiper, configs)
 }
 
 export const thumbsGenerate = (swiper: any, configs: ESwiperConfigs) => {
 	const { thumbsConfigs, lazy } = configs
-	const { slidesPerView, spaceBetween = 2 } = thumbsConfigs
+	const {
+		slidesPerView,
+		spaceBetween = 2,
+		direction,
+		loop,
+		arrows
+	} = thumbsConfigs
 
 	const _thumbsContainer = thumbsStructure(configs)
 
 	new Swiper(_thumbsContainer, {
-		loop: true,
+		direction,
+		loop,
+		arrows,
 		spaceBetween,
 		lazy,
 		slidesPerView,
@@ -153,7 +169,7 @@ export const thumbsGenerate = (swiper: any, configs: ESwiperConfigs) => {
 
 export const thumbsStructure = (configs: ESwiperConfigs) => {
 	const { thumbsConfigs, lazy } = configs
-	const { thumbsContainer } = thumbsConfigs
+	const { thumbsContainer, arrows } = thumbsConfigs
 
 	const _thumbsContainer = document.querySelector(`.${thumbsContainer}`)
 	_thumbsContainer.classList.add('swiper')
@@ -167,6 +183,11 @@ export const thumbsStructure = (configs: ESwiperConfigs) => {
 		_wrapperSwiper.appendChild(_slide)
 
 		if (lazy) {
+			const _preLoader = Element({
+				type: 'div',
+				classList: ['swiper-lazy-preloader']
+			})
+			_slide.appendChild(_preLoader)
 			const _image = _slide.querySelector('img')
 			_image.classList.add('swiper-lazy')
 			_image.setAttribute('data-src', _image.src)
@@ -175,6 +196,19 @@ export const thumbsStructure = (configs: ESwiperConfigs) => {
 	})
 
 	_thumbsContainer.appendChild(_wrapperSwiper)
+
+	if (arrows) {
+		const _buttonNext = Element({
+			type: 'div',
+			classList: ['swiper-button-next']
+		})
+		const _buttonPrev = Element({
+			type: 'div',
+			classList: ['swiper-button-prev']
+		})
+		_thumbsContainer.appendChild(_buttonNext)
+		_thumbsContainer.appendChild(_buttonPrev)
+	}
 
 	return _thumbsContainer
 }

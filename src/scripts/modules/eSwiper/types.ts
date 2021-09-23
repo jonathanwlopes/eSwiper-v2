@@ -1,4 +1,5 @@
 export interface ESwiperConfigs {
+	swiperContainer: string
 	direction: 'horizontal' | 'vertical'
 	loop?: boolean
 	arrows?: boolean
@@ -13,7 +14,6 @@ export interface ESwiperConfigs {
 	autoplay?: boolean | AutoPlayProps
 	lazy?: boolean
   spaceBetween?: number
-  thumbs?: boolean
   thumbsConfigs?: ThumbsConfigs
 }
 
@@ -23,5 +23,6 @@ interface AutoPlayProps {
 }
 
 interface ThumbsConfigs extends Partial<ESwiperConfigs> {
+	isActive: boolean
 	thumbsContainer: string
 }
