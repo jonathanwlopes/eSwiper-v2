@@ -1,3 +1,5 @@
+import { LazyOptions } from 'swiperTypes'
+
 export interface ESwiperConfigs {
 	swiperContainer: string
 	direction: 'horizontal' | 'vertical'
@@ -12,7 +14,7 @@ export interface ESwiperConfigs {
 	rows?: number
 	mousewheel?: boolean
 	autoplay?: boolean | AutoPlayProps
-	lazy?: boolean
+	lazy?: boolean | LazyOptions
   spaceBetween?: number
   thumbsConfigs?: ThumbsConfigs
 }
